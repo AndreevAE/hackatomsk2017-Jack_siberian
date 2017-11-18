@@ -1,27 +1,17 @@
 # hackatomsk2017-Jack_siberian
 
-# Frontend
-* Node.js v8
-* Socket.IO
-* ReactJS v16
-* jQuery
+# server for game 
+  ZMQ (use socet) http://zeromq.org/bindings:cpp 
+or
+  node.js + "modul c++"
 
-```
-docker run -d -p 6379:6379 redis --port 6379
-```
+to send data will be create with Json
 
-## Start
-Step 1:
-```
-yarn install
-```
+# game logic
 
-Step 2:
-```
-yarn start
-```
+hard version - like (it you can use like .h library): durak.cpp
+more hard version - easy_game.cpp
 
-Step 3 (for frontend):
-```
-yarn watch
-```
+
+
+
