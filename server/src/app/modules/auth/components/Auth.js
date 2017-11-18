@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Formik} from "formik";
 import AuthAPI from "../../../utils/AuthAPI";
+import logo from "../../../assets/imgs/logo.png";
 
 
 const authApi = new AuthAPI();
@@ -19,10 +20,18 @@ export default class App extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-md-4 offset-md-4">
-                        <div className="card auth-form">
+                    <div className="col-md-4 offset-md-4 auth-form">
+                        <img src={logo} width="150"
+                             height="150" className="logo-img"
+                             alt=""/>
+                        <span className="logo-text">Durak</span>
+                        <br/>
+                        <br/>
+                        <div className="card">
                             <div className="card-body">
-                                <h3 className="card-title">Привет, бро!</h3>
+                                <div className="card-title">
+                                    <h3>Привет, бро!</h3>
+                                </div>
 
                                 <Formik
                                     initialValues={{
@@ -37,18 +46,19 @@ export default class App extends Component {
                                     render={({values, errors, touched, handleChange, handleSubmit, isSubmitting}) =>
 
                                         <form onSubmit={handleSubmit}>
-                                                <div className="form-group">
-                                                    <input
-                                                        className="form-control"
-                                                        placeholder="Твой ник"
-                                                        name="username"
-                                                        type="text"
-                                                        onChange={handleChange}
-                                                        value={values.username}/>
-                                                </div>
-                                                <button type="submit"
-                                                        className="btn btn-lg btn-success btn-block">
-                                                Начать играть</button>
+                                            <div className="form-group">
+                                                <input
+                                                    className="form-control"
+                                                    placeholder="Твой ник"
+                                                    name="username"
+                                                    type="text"
+                                                    onChange={handleChange}
+                                                    value={values.username}/>
+                                            </div>
+                                            <button type="submit"
+                                                    className="btn btn-lg btn-success btn-block">
+                                                Начать играть
+                                            </button>
                                         </form>}/>
                             </div>
                         </div>

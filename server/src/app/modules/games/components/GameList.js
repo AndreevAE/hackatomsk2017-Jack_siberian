@@ -42,7 +42,6 @@ export default class GameList extends Component {
                     break;
 
                 case 'new-game':
-                    alert('Created');
                     this.props.history.push(`/games/${data.data.id}`);
                     break;
             }

@@ -2,6 +2,7 @@ const redis = require("redis");
 const redisClient = redis.createClient();
 const jwt = require('json-web-token');
 const config = require('./config');
+const cardManager = require('./game/card');
 
 
 function proccessSocketGame(socket, data, user) {
@@ -48,14 +49,17 @@ function proccessSocketGame(socket, data, user) {
                     freeCards: [],
                     players: [{
                         username: user.username,
+                        avatar: user.avatar,
                         score: 0,
-                        cards: []
+                        cards: cardManager.generateCards().slice(0, 6)
                     },
                     {
                         username: 'test',
+                        avatar: 'animal_01',
                         score: 0,
-                        cards: []
+                        cards: cardManager.generateCards().slice(0, 6)
                     }],
+                    cards: cardManager.generateCards(),
                     creator: user.username
                 };
 

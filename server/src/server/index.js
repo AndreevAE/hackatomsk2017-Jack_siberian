@@ -19,29 +19,15 @@ app.use(bodyParser.json());
 
 app.use('/assets', express.static(path.join(__dirname, '../../build')));
 
-// app.get('/api/auth', function (req, res) {
-//     res.sendFile(path.resolve(__dirname + '../../../build/index.html'));
-//
-//     let payload = {
-//         username: 'test1111'
-//     };
-//
-//
-//     jwt.encode(config.secret, payload, function (err, token) {
-//         res.send({
-//             token
-//         });
-//     })
-// });
-
 
 app.put('/api/auth', function (req, res) {
     res.sendFile(path.resolve(__dirname + '../../../build/index.html'));
     const username = req.body.username;
 
     redisClient.get('users', function (err, reply) {
-        let users = reply ? JSON.parse(reply) : [];;
+        let users;
         try {
+            users = reply ? JSON.parse(reply) : [];
             users.push(username);
         } catch (e) {
             users = [username];
@@ -50,7 +36,8 @@ app.put('/api/auth', function (req, res) {
         redisClient.set('users', JSON.stringify(users));
 
         let payload = {
-            username
+            username,
+            avatar: 'animal_0' + (Math.floor(Math.random() * 8) + 1)
         };
 
         jwt.encode(config.secret, payload, function (err, token) {

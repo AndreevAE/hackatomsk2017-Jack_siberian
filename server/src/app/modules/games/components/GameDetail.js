@@ -16,71 +16,26 @@ export default class GameDetail extends Component {
             this.props.history.push('/auth');
         }
 
-        let cards = [];
-
-        for (let i = 6; i < 14; i++) {
-            cards.push({
-                num: i,
-                suit: 'clubs'
-            });
-        }
-
-        for (let i = 6; i < 14; i++) {
-            cards.push({
-                num: i,
-                suit: 'diamonds'
-            });
-        }
-
-        for (let i = 6; i < 14; i++) {
-            cards.push({
-                num: i,
-                suit: 'hearts'
-            });
-        }
-
-        for (let i = 6; i < 14; i++) {
-            cards.push({
-                num: i,
-                suit: 'spades'
-            });
-        }
-
-
-        cards.push({
-            num: 1,
-            suit: 'clubs'
-        });
-        cards.push({
-            num: 1,
-            suit: 'diamonds'
-        });
-        cards.push({
-            num: 1,
-            suit: 'hearts'
-        });
-        cards.push({
-            num: 1,
-            suit: 'spades'
-        });
-
 
         this.state = {
             socket,
             game: {
+                currentPlayer: {
+                    cards: []
+                },
                 players: [
                     {
                         id: 1,
                         username: 'test',
-                        cards: [cards[0], cards[1], cards[2]]
+                        cards: []
                     },
                     {
                         id: 2,
                         username: 'SUPER!!!!!!',
-                        cards: [cards[0], cards[1], cards[2]]
+                        cards: []
                     }
                 ],
-                cards: cards
+                cards: []
             },
 
             user: authApi.getUser()
@@ -103,15 +58,30 @@ export default class GameDetail extends Component {
                         return
                     }
 
+                    let currentPlayer = {};
+
+                    for (let i = 0; i < data.data.players.length; i++) {
+                        if (data.data.players[i].username === user.username) {
+                            currentPlayer = data.data.players[i].cards;
+                            data.data.players = data.data.players.splice(i, 1);
+                            break;
+                        }
+                    }
+
                     this.setState({
-                        game: data.data
+                        game: {...data.data, currentPlayer},
                     });
+
+                    console.log({...data.data, currentPlayer});
 
                     break;
             }
         });
     }
 
+    popCard(num, suit) {
+        alert(num + ' ' + suit)
+    }
 
     render() {
         const {game} = this.state;
@@ -123,26 +93,28 @@ export default class GameDetail extends Component {
                         <div className="players">
                             {game.players.map(player => (
                                 <div key={player.id}
-                                    className="player">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Avatar_poe84it.png" className="avatar" alt="avatar"/>
+                                     className="player">
+                                    <img
+                                        src={`/animal_avatars/${player.avatar}.png`}
+                                        className="avatar" alt="avatar"/>
                                     <span>{player.username}</span>
                                     <div className="player-cards">
                                         {player.cards.map(card => (
-                                            <div
-                                                className={`game-card ${card.suit} rank${card.num}`}>
-                                                <div className="face"/>
-                                            </div>
+                                            <img className="game-card"
+                                                 src={`/cards2/${card.num}_${card.suit}.png`}
+                                                 onClick={this.popCard.bind(this, card.num, card.suit)}
+                                                 alt=""/>
                                         ))}
                                     </div>
                                 </div>
                             ))}
                         </div>
                         <div className="user-cards">
-                            {game.cards.map(card => (
-                                <div
-                                    className={`game-card ${card.suit} rank${card.num}`}>
-                                    <div className="face"/>
-                                </div>
+                            {game.currentPlayer.cards.map(card => (
+                                <img className="game-card"
+                                     src={`/cards2/${card.num}_${card.suit}.png`}
+                                     onClick={this.popCard.bind(this, card.num, card.suit)}
+                                     alt=""/>
                             ))}
                         </div>
                     </div>

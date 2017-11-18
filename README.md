@@ -1,6 +1,9 @@
 # hackatomsk2017-Jack_siberian
 
-# Frontend
+Product manager: @Jack_siberian
+
+
+# Frontend + Backend = one love
 * Node.js v8
 * Socket.IO
 * ReactJS v16
