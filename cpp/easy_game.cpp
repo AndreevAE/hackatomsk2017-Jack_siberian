@@ -3,6 +3,7 @@
 #include <time.h>
 #include <list>
 
+using namespace std;
 class Colode{
 public:
 	int num_card;
@@ -27,22 +28,22 @@ public:
 		//card_trump[2] < - надо определить козырную масть 
 	}
 
-	get_card(){
+	void get_card(){
 	while(1){
 			int mst = 0;
-			suit = 4*rand()%1000;
+			mst = 4*rand()%1000;
 			int suit = 0;
 			suit = 9*rand()%1000;
 		//мистером рэндомом определяем масть и номер карты
 		//проверяем, а не забрали ли ее? Если нет, забираем и удаляем из массива	
 			switch (mst){
-				case 0: if (colod1[suit]!==0) {colod1[suit]=0;
+				case 0: if (colod1[suit]!= 0) {colod1[suit]=0;
 								break;}		
-				case 1: if (colod2[suit]!==0) {colod2[suit]=0;//<        добавить ВЫХОД из цикла!!!
+				case 1: if (colod2[suit]!= 0) {colod2[suit]=0;//<        добавить ВЫХОД из цикла!!!
 								break;}
-				case 2: if (colod3[suit]!==0) {colod3[suit]=0;
+				case 2: if (colod3[suit]!= 0) {colod3[suit]=0;
 								break;}
-				case 3: if (colod4[suit]!==0) {colod4[suit]=0;
+				case 3: if (colod4[suit]!= 0) {colod4[suit]=0;
 								break;}
 			}
 		}	
@@ -71,7 +72,7 @@ public:
 			 colod4[9] = 0; // крести
 		}
 	}
-	add_card(int m, int s){
+	void add_card(int m, int s){
 		play_card++;
 		switch (m){
 				case 0: colod1[s] = 1;
@@ -85,7 +86,7 @@ public:
 
 	}  //добавить карту игроку
 
-	remove_card(int m, int s) //удалить карту у игрока               //МОГУТ БЫТЬ ОШИБКИ!
+	void remove_card(int m, int s) //удалить карту у игрока               //МОГУТ БЫТЬ ОШИБКИ!
 	{
 		if(play_card!=0) play_card--;
 		switch (m){
@@ -100,7 +101,7 @@ public:
 
 	}
 
-	show_card()  //вывод списока карт этого игрока
+	void show_card()  //вывод списока карт этого игрока
 	{
 		cout << play_card <<endl;
 		for(int i=0; i<9; i++){
