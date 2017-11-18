@@ -1,7 +1,10 @@
 # hackatomsk2017-Jack_siberian
 
 # Frontend
-Node.js v8
+* Node.js v8
+* Socket.IO
+* ReactJS v16
+* jQuery
 
 ## Start
 Step 1:
