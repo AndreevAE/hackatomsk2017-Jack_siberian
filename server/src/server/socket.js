@@ -9,9 +9,9 @@ function socketHandler(socket) {
     socket.on('games', function (data) {
         switch (data.action) {
             // TODO
-            case 'get':
+            case 'get-list':
                 socket.emit('player', {
-                    type: 'game-list',
+                    type: 'list',
                     data: [
                         {
                             id: 1,
@@ -29,6 +29,7 @@ function socketHandler(socket) {
 
             // TODO
             case 'create':
+
                 socket.emit('player', {
                     type: 'new-game',
                     data: {
@@ -56,4 +57,5 @@ function socketHandler(socket) {
     });
 }
 
-module.exports = confing;
+
+module.exports = socketHandler;

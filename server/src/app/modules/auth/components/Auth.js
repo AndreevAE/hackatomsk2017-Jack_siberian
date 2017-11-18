@@ -1,8 +1,14 @@
 import React, {Component} from "react";
 import {Formik} from "formik";
+import AuthAPI from "../../../utils/AuthAPI";
+
+
+const authApi = new AuthAPI();
 
 
 export default class App extends Component {
+
+
     render() {
         const {history} = this.props;
 
@@ -19,8 +25,12 @@ export default class App extends Component {
                                         username: ''
                                     }}
                                     onSubmit={(values, {setSubmitting, setValues}) => {
-                                        alert(`Привет, ${values.username}! Ты крут!`);
-                                        history.push('/games');
+                                        authApi.register(values.username).then((data) => {
+                                            alert(`Привет, ${values.username}! Ты крут!`);
+                                            alert(data);
+                                        });
+                                        // alert(`Привет, ${values.username}! Ты крут!`);
+                                        // history.push('/games');
                                     }}
                                     render={({values, errors, touched, handleChange, handleSubmit, isSubmitting}) =>
 

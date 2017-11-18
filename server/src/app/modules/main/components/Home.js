@@ -9,6 +9,12 @@ class App extends Component {
             console.log(data);
             socket.emit('my other event', {my: 'data'});
         });
+
+        socket.emit('games', {action: 'create'});
+
+        socket.on('player', function (data) {
+            console.log('games', data);
+        });
     }
 
     render() {

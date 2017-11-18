@@ -6,6 +6,10 @@
 * ReactJS v16
 * jQuery
 
+```
+docker run -d -p 6379:6379 redis --port 6379
+```
+
 ## Start
 Step 1:
 ```
