@@ -11,6 +11,11 @@
 
 Product manager: @Jack_siberian
 
+# Design 
+Scetch made with figma.com
+Source: https://www.figma.com/file/OJVd6h5XlZpxZrHesLIOLu16/Untitled
+
+Source for icons: freepic.com and flaticon.com 
 
 # Frontend + Backend = one love
 * Node.js v8
