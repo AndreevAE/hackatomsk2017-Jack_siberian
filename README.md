@@ -9,7 +9,7 @@ to send data will be create with Json
 
 # game logic
 
-hard version - like (it you can use like .h library): durak.cpp
+hard version (it you can use like .h library): durak.cpp
 more hard version - easy_game.cpp
 
 
