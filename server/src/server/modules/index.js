@@ -18,29 +18,44 @@ class Wallet {
         this.wallet.getBalance().then(function (response) { console.log('My balance is %d!', response.balance); })
     }
 
-    listAdr() {
-        console.log('list addresses')
-        this.wallet.listAddresses().then(function (response) { console.log(response); })
+    fullHD() {
+        console.log('enable HD')
+        this.wallet.enableHD()
+    }
+
+    getAccounts() {
+        console.log('getAccounts')
+        this.wallet.listAccounts().then(function (response) { console.log(response); })
     }
 
     withdraw(amount) {
         console.log('withdraw')
-        var bankAddress = bankWallet.listAddresses().then(function (response) { console.log('Bank Addresses[0] = %s', response[0].address)})
-        var walletAddress = wallet.listAddresses().then(function (response) { console.log('Addresses[0] = %s', response[0].address)})
+        var bankAddress = this.bankWallet.listAccounts().then(function (response) { console.log('Bank Addresses[0] = %s', response[0].receiveAddress)})
+        var walletAddress = this.wallet.listAccounts().then(function (response) { console.log('Addresses[0] = %s', response[0].receiveAddress)})
         this.wallet.send(bankAddress, amount, {from: walletAddress})
+                   .then(function (response) { console.log(response.message)})
+                   .catch(function (error) { console.log(error)})
     }
 
     payout(amount, playersCount) {
         console.log('payout')
-        var bankAddress = bankWallet.listAddresses().then(function (response) { console.log('Bank Addresses[0] = %s', response[0].address)})
-        var walletAddress = wallet.listAddresses().then(function (response) { console.log('Addresses[0] = %s', response[0].address)})
+        var bankAddress = this.bankWallet.listAccounts().then(function (response) { console.log('Bank Addresses[0] = %s', response[0].receiveAddress)})
+        var walletAddress = this.wallet.listAccounts().then(function (response) { console.log('Addresses[0] = %s', response[0].receiveAddress)})
         this.bankWallet.send(walletAddress, amount * playersCount, {from: bankAddress})
+                       .then(function (response) { console.log(response)})
+                       .catch(function (error) { console.log(error)})
     }
 }
 
 var options = { apiCode: 'myAPICode', apiHost: 'http://localhost:3000' }
 var wallet = new Wallet('28e400a2-8a4d-4d62-b2c2-98fbf5765085', 'TQOnMnT5aqbG7SZ8tRxJ', options)
 wallet.getBalance()
-wallet.listAdr()
+//wallet.getAccounts()
+wallet.withdraw(100)
+
+var wallet2 = new Wallet(bankGuid, bankPassword, options)
+wallet2.getBalance()
+//wallet2.getAccounts()
+wallet2.payout(1000, 5)
 
 module.exports = Wallet
