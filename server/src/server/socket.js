@@ -58,8 +58,35 @@ function proccessSocketGame(socket, data, user) {
                         avatar: 'animal_01',
                         score: 0,
                         cards: cardManager.generateCards().slice(0, 6)
+                    },
+                    {
+                        username: 'test1',
+                        avatar: 'animal_04',
+                        score: 0,
+                        cards: cardManager.generateCards().slice(0, 6)
+                    },
+                    {
+                        username: 'test2',
+                        avatar: 'animal_02',
+                        score: 0,
+                        cards: cardManager.generateCards().slice(0, 6)
+                    },
+                    {
+                        username: 'test3',
+                        avatar: 'animal_03',
+                        score: 0,
+                        cards: cardManager.generateCards().slice(0, 6),
+                        isActive: true
+                    },
+                    {
+                        username: 'regreg',
+                        avatar: 'animal_07',
+                        score: 0,
+                        cards: cardManager.generateCards().slice(0, 6)
                     }],
                     cards: cardManager.generateCards(),
+                    busyCards: cardManager.generateCards().slice(5, 10),
+                    mainCard: cardManager.generateCards()[7],
                     creator: user.username
                 };
 
