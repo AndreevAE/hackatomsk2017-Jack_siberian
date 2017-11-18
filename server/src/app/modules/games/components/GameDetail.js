@@ -1,10 +1,20 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
+import AuthAPI from "../../../utils/AuthAPI";
+import openSocket from "socket.io-client";
+import $ from "jquery";
+
+
+const authApi = new AuthAPI();
 
 
 export default class GameDetail extends Component {
     constructor(props) {
         super(props);
+        const socket = openSocket('http://localhost:3000');
+
+        if (!authApi.isAuth()) {
+            this.props.history.push('/auth');
+        }
 
         let cards = [];
 
@@ -56,6 +66,7 @@ export default class GameDetail extends Component {
 
 
         this.state = {
+            socket,
             game: {
                 players: [
                     {
@@ -70,9 +81,35 @@ export default class GameDetail extends Component {
                     }
                 ],
                 cards: cards
-            }
-        };
+            },
 
+            user: authApi.getUser()
+        };
+    }
+
+    componentDidMount() {
+        const {user, socket} = this.state;
+
+        socket.emit('games', {
+            action: 'get-detail',
+            token: $.cookie('token'),
+            game_id: this.props.match.params.id
+        });
+
+        socket.on(`user-${user.username}`, (data) => {
+            switch (data.type) {
+                case 'game-detail':
+                    if (parseInt(this.props.match.params.id) !== parseInt(data.data.id)) {
+                        return
+                    }
+
+                    this.setState({
+                        game: data.data
+                    });
+
+                    break;
+            }
+        });
     }
 
 

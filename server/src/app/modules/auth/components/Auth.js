@@ -12,6 +12,10 @@ export default class App extends Component {
     render() {
         const {history} = this.props;
 
+        // if (authApi.isAuth()) {
+        //     history.push('/games');
+        // }
+
         return (
             <div className="container">
                 <div className="row">
@@ -27,10 +31,8 @@ export default class App extends Component {
                                     onSubmit={(values, {setSubmitting, setValues}) => {
                                         authApi.register(values.username).then((data) => {
                                             alert(`Привет, ${values.username}! Ты крут!`);
-                                            alert(data);
+                                            history.push('/games');
                                         });
-                                        // alert(`Привет, ${values.username}! Ты крут!`);
-                                        // history.push('/games');
                                     }}
                                     render={({values, errors, touched, handleChange, handleSubmit, isSubmitting}) =>
 

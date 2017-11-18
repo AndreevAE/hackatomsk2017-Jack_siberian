@@ -2,8 +2,16 @@ import $ from "jquery";
 
 
 export default class AuthAPI {
+    getUser() {
+        if (!this.isAuth()) {
+            return;
+        }
+
+        return this.parseJWT($.cookie('token'));
+    }
+
     isAuth() {
-        return !!$.cookie('token')
+        return !!$.cookie('token');
     }
 
     parseJWT(token) {
@@ -13,13 +21,18 @@ export default class AuthAPI {
     }
 
     register(username) {
-        return fetch('/api/auth/', {
+        return fetch('http://localhost:3000/api/auth', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             method: 'put',
-            params: {
-                username
-            }
-        }).then(function (response) {
-            return response.json();
-        })
+            body: JSON.stringify({username})
+        }).then(response => (
+            response.json()
+        )).then(data => {
+            $.cookie('token', data.token);
+            return data;
+        });
     }
 }

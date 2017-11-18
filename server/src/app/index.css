@@ -1,5 +1,27 @@
+@import url('https://fonts.googleapis.com/css?family=Kalam:400,700&subset=devanagari,latin-ext');
+
 body {
-    background-color: #219653;
+    background-color: #2dad61;
+    background-image: repeating-radial-gradient(ellipse farthest-corner at left top, rgb(78, 218, 134) 0%, rgb(21, 96, 53) 100%);
+    min-height: 100vh;
+}
+
+/* Navs */
+.navbar {
+    /*padding: 0.5rem 5rem;*/
+    background-color: #828282;
+}
+
+.navbar .logo-text {
+    font-family: 'Kalam', cursive;
+    font-size: 2.5rem;
+    line-height: 50px;
+    margin-left: 10px;
+    color: #fff;
+}
+
+.navbar .logo-img {
+
 }
 
 /* Auth */
@@ -39,7 +61,7 @@ body {
 
 /* Player cards*/
 .players {
-  display: flex;
+    display: flex;
 }
 
 .players .player {
@@ -86,7 +108,7 @@ body {
 
 .game-card.rank1:before,
 .game-card.rank1:after {
-  content: "A";
+    content: "A";
 }
 
 .game-card.spades.rank1 .face {
