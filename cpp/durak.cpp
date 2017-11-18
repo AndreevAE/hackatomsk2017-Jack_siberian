@@ -122,9 +122,50 @@ tagCard	TPlayer::GetCard(int number)
 //----------------------------------------------------------------
 
 
+class Game{
+	TPlayer		*m_Hum_Player;
+	TPlayer		*m_Work_array;
+	TCards		*m_Cards;					//здесь колода
+
+	tagCard		GetCard(int number);
+	bool		EndTurn();
+	void		Winer();
+	void		SetStatus(int iStatus);
+	
+	void		GetNewCards();
+	void		HumanTurn(int card);
+	int			m_Turn;
+	int			m_iStatus;
+	int			IsWin;
+	
+private:
+	bool		m_bBita;
+	bool		m_bFirstStep;
+	int			m_iStep;
+	bool		m_bTake;						//нечем бить
+};
+
 
 
 int main(){
+//тест классов
+	TCards m_Cards;
+	TPlayer m_Hum_Player;
+	TPlayer m_Work_array;
+	
+										
+//	GetNewCards();						//берём карты из колоды
+
+	//m_Turn=iHum;						//Первым ходит человек
+
+//	m_bTake=false;
+
+
+
+	delete	m_Cards;
+	delete	m_Hum_Player;
+	delete	m_Work_array;
+
 
 //ждем игроков
 
