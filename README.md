@@ -2,7 +2,7 @@
 
 Карточная игра "Дурак" с возможностью делать ставки на фантики или Биткоины
 
-Разработка ведется в 3 направлениях:
+Разработка ведется в 4 направлениях:
  * Дизайн 
  * Алгоритм Игры (ветка cpp_serv)
  * Фрондэнд и Бэкенд (ветка m_sylack)
@@ -44,11 +44,15 @@ yarn watch
   
 or
 
-  node.js + "modul c++"
+  node.js (js)
 
 to send data will be create with Json
 
 # game logic
+
+Create on node.js server with use js.
+
+Another realise:
 
 hard version (it you can use like .h library): durak.cpp
 
