@@ -14,10 +14,19 @@
     "build": "src/"
   },
   "dependencies": {
+    "bootstrap": "^4.0.0-beta.2",
     "express": "^4.16.2",
+    "jquery": "^3.2.1",
+    "jquery.cookie": "^1.4.1",
+    "popper.js": "^1.12.9",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
+    "react-redux": "^5.0.6",
+    "react-router-config": "^1.0.0-beta.4",
+    "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
     "socket.io": "^2.0.4",
     "socket.io-client": "^2.0.4"
   },

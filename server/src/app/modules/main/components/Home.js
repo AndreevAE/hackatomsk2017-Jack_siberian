@@ -1,9 +1,5 @@
-import React, {Component} from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-import openSocket from 'socket.io-client';
-
+import React, {Component} from "react";
+import openSocket from "socket.io-client";
 
 
 class App extends Component {
@@ -20,8 +16,8 @@ class App extends Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">Welcome to React</h1>
+                    <img src="" className="App-logo" alt="logo"/>
+                    <h1 className="App-title">TEST1</h1>
                 </header>
                 <p className="App-intro">
                     To get started, edit <code>src/App.js</code> and save to
