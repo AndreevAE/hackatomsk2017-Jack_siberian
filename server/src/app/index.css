@@ -114,7 +114,7 @@ body {
 }
 
 .players .avatar.active {
-    box-shadow: 0 0 10px 4px rgba(255, 0, 0, 1);
+    box-shadow: 0 0 10px 7px rgba(255, 0, 0, 1);
 }
 
 .players span {
