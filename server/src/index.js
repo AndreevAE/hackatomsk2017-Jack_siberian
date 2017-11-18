@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 import configureStore from "./app/store";
 
 // Styles
-import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
+import "./app/index.css";
 
 // Other imports
 import $ from "jquery";
