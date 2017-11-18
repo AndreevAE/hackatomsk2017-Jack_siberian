@@ -4,6 +4,7 @@
 * Node.js v8
 * Socket.IO
 * ReactJS v16
+* jQuery
 
 ## Start
 Step 1:
