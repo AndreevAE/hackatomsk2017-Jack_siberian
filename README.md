@@ -1,20 +1,10 @@
 # hackatomsk2017-Jack_siberian
 
-# Frontend
-Node.js v8
+Карточная игра "Дурак" с возможностью делать ставки на фантики или Биткоины
 
-## Start
-Step 1:
-```
-yarn install
-```
+Разработка ведется в 3 направлениях:
+ * Дизайн 
+ * Алгоритм Игры (ветка cpp_serv)
+ * Фрондэнд и Бэкенд (ветка m_sylack)
+ * Биткоины 
 
-Step 2:
-```
-yarn start
-```
-
-Step 3 (for frontend):
-```
-yarn watch
-```
