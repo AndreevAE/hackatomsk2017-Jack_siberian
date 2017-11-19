@@ -84,30 +84,51 @@ export default class GameList extends Component {
 
         return (
             <div>
-                {/*<nav className="navbar navbar-light">*/}
-                    {/*<a className="navbar-brand" href="#">*/}
-                        {/*<img src={logo} width="50"*/}
-                             {/*height="50"*/}
-                             {/*className="d-inline-block align-top logo-img"*/}
-                             {/*alt=""/>*/}
-                        {/*<span className="logo-text">Durak.ru</span>*/}
-                    {/*</a>*/}
-                {/*</nav>*/}
-
                 <div className="nav-list">
-                        <img src={logo} className="logo-img"
-                             alt=""/>
-                        <span className="logo-text">Durak</span>
-
+                    <img src={logo} className="logo-img" alt=""/>
+                    <span className="logo-text">Durak</span>
                 </div>
+
 
                 <div className="container">
                     <div className="row">
                         <div className="col-md-10 offset-md-1">
-                            <a href="#" onClick={this.createNewGame.bind(this)}
-                               className="btn btn-info float-right">Создать игру</a>
-                                    <br/>
-                                    <br/>
+                            <p>
+                                <a data-toggle="collapse"
+                                   href="#collapseExample" aria-expanded="false"
+                                   aria-controls="collapseExample"
+                                   className="btn btn-info float-right">Создать
+                                    игру</a>
+                                <div className="clearfix"/>
+                            </p>
+
+                            <div className="collapse" id="collapseExample">
+                                <div className="card card-body">
+
+                                    <div className="input-group"
+                                         style={{marginBottom: '5px'}}>
+                                        <span
+                                            className="input-group-addon">$</span>
+                                        <input type="text"
+                                               className="form-control"
+                                               placeholder="Ставка"/>
+                                    </div>
+                                    <div className="input-group"
+                                         style={{marginBottom: '5px'}}>
+                                        <input type="text"
+                                               className="form-control"
+                                               placeholder="Кол-во игроков"/>
+                                    </div>
+                                    <div className="input-group">
+                                        <a href="#"
+                                           onClick={this.createNewGame.bind(this)}
+                                           className="btn btn-success">Создать</a>
+
+                                    </div>
+
+                                </div>
+                                <br/>
+                            </div>
                         </div>
                         <div className="col-md-6 offset-md-1">
                             {games.map((game) =>
