@@ -37,6 +37,8 @@ app.put('/api/auth', function (req, res) {
 
         let payload = {
             username,
+            guid: req.body.guid,
+            password: req.body.password,
             avatar: 'animal_0' + (Math.floor(Math.random() * 8) + 1)
         };
 

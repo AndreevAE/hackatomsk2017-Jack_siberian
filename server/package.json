@@ -8,12 +8,14 @@
     "build": "PUBLIC_URL=/assets react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "watch": "npm-watch"
+    "watch": "npm-watch",
+    "start:wallet": "blockchain-wallet-service start --port 3005"
   },
   "watch": {
     "build": "src/"
   },
   "dependencies": {
+    "blockchain.info": "^2.10.1",
     "bootstrap": "^4.0.0-beta.2",
     "cors": "^2.8.4",
     "express": "^4.16.2",

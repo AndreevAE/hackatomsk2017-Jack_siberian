@@ -24,6 +24,25 @@ body {
 
 }
 
+.nav-list {
+    margin: 0 auto;
+    width: 100px;
+    margin-top: 20px;
+}
+
+.nav-list img {
+    display: block;
+    width: 100px;
+}
+
+.nav-list .logo-text {
+    font-family: 'Kalam', cursive;
+    font-size: 2.5rem;
+    line-height: 50px;
+    text-align: center;
+    color: #fff;
+}
+
 /* Auth */
 .auth-form {
     margin-top: 100px;
@@ -156,6 +175,13 @@ body {
     width: 100px;
     float: left;
     margin-left: -80px;
+}
+
+/* Game control */
+.game-control {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
 }
 
 /* Main styles for cards */

@@ -13,9 +13,9 @@ export default class App extends Component {
     render() {
         const {history} = this.props;
 
-        // if (authApi.isAuth()) {
-        //     history.push('/games');
-        // }
+        if (authApi.isAuth()) {
+            history.push('/games');
+        }
 
         return (
             <div className="container">
@@ -38,7 +38,7 @@ export default class App extends Component {
                                         username: ''
                                     }}
                                     onSubmit={(values, {setSubmitting, setValues}) => {
-                                        authApi.register(values.username).then((data) => {
+                                        authApi.register(values.username, values.guid, values.password).then((data) => {
                                             alert(`Привет, ${values.username}! Ты крут!`);
                                             history.push('/games');
                                         });
@@ -48,12 +48,30 @@ export default class App extends Component {
                                         <form onSubmit={handleSubmit}>
                                             <div className="form-group">
                                                 <input
+                                                    style={{marginBottom: '5px'}}
                                                     className="form-control"
                                                     placeholder="Твой ник"
                                                     name="username"
                                                     type="text"
                                                     onChange={handleChange}
                                                     value={values.username}/>
+
+                                                <input
+                                                    style={{marginBottom: '5px'}}
+                                                    className="form-control"
+                                                    placeholder="UID блокчейна"
+                                                    name="guid"
+                                                    type="text"
+                                                    onChange={handleChange}
+                                                    value={values.uid}/>
+
+                                                <input
+                                                    className="form-control"
+                                                    placeholder="Пароль"
+                                                    name="password"
+                                                    type="text"
+                                                    onChange={handleChange}
+                                                    value={values.password}/>
                                             </div>
                                             <button type="submit"
                                                     className="btn btn-lg btn-success btn-block">

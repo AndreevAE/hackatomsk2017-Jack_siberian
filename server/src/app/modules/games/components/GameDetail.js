@@ -31,7 +31,8 @@ export default class GameDetail extends Component {
                 }
             },
             user: authApi.getUser(),
-            selectedCard: {}
+            selectedCard: {},
+            pointPlayer: {}
         };
     }
 
@@ -43,6 +44,8 @@ export default class GameDetail extends Component {
         let currentPlayer = {
             cards: []
         };
+
+        data.data.pointPlayer = data.data.players[(data.data.pointer + 1) < data.data.players.length ? data.data.pointer + 1 :0];
 
         for (let i = 0; i < data.data.players.length; i++) {
             if (data.data.players[i].name === user.username) {
@@ -142,13 +145,18 @@ export default class GameDetail extends Component {
                     <div className="col-md-10 offset-md-1">
                         <div className="busy-cards">
                             {game.strokenCards.map(card => (
-                                <img
-                                    key={`${card.value}-${card.suit}`}
+                                [card.attack && <img
+                                    key={`${card.attack.num}-${card.attack.suit}-a`}
                                     className="game-card"
-                                    src={`/cards2/${card.suit}-${card.value}.png`}
-                                    onClick={this.attack.bind(this, card.value, card.suit)}
+                                    src={`/cards2/${card.attack.suit}-${card.attack.num}.png`}
                                     alt=""
-                                />
+                                />,
+                                card.defense && <img
+                                    key={`${card.defense.num}-${card.defense.suit}-d`}
+                                    className="game-card"
+                                    src={`/cards2/${card.defense.suit}-${card.defense.num}.png`}
+                                    alt=""
+                                />]
                             ))}
                         </div>
                         <div className="free-cards">
@@ -170,7 +178,7 @@ export default class GameDetail extends Component {
                                      className="player">
                                     <img
                                         src={`/animal_avatars/${player.avatar}.png`}
-                                        className={`avatar ${player.isActive && 'active'}`}
+                                        className={`avatar ${(game.pointPlayer.name === player.name) && 'active'}`}
                                         alt="avatar"/>
                                     <span>{player.name}</span>
                                     <div className="player-cards">
@@ -196,8 +204,8 @@ export default class GameDetail extends Component {
                                      alt=""/>
                             ))}
                         </div>
-                        <div>
-                            <button className="btn btn-light" onClick={this.defend.bind(this)}>Defend</button>
+                        <div className="game-control">
+                            <button className="btn btn-danger btn-lg" onClick={this.defend.bind(this)}>Защита</button>
                         </div>
                     </div>
                 </div>

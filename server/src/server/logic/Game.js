@@ -19,9 +19,12 @@ class Game {
             });
             this.pointer = parseInt(game.pointer);
             game.strokenCards = game.strokenCards || [];
-            this.strokenCards = game.strokenCards.map(card => (
-                new Card(card.suit, card.num, card.value)
-            ));
+            this.strokenCards = game.strokenCards.map(card => {
+                return {
+                    attack: card.attack && new Card(card.attack.suit, card.attack.num, card.attack.value),
+                    defense: card.defense && new Card(card.defense.suit, card.defense.num, card.defense.value)
+                }
+            });
             this.playerSize = parseInt(game.playerSize);
             this.status = game.status;
         } else {
@@ -56,7 +59,11 @@ class Game {
         const attackerPrimary = this.players[this.pointer % this.players.length];
         const defendant = this.players[(this.pointer + 1) % this.players.length];
         const attackerSecondary = this.players[(this.pointer + 2) % this.players.length];
-        return new Stroke(attackerPrimary, attackerSecondary, defendant, this.deck, this.trump);
+
+        console.log('attackerPrimary', attackerPrimary);
+        console.log('attackerSecondary', attackerSecondary);
+        console.log('defendant', defendant);
+        return new Stroke(attackerPrimary, attackerSecondary, defendant, this.deck, this.trump, this.strokenCards);
     }
 
     toDict() {
@@ -66,7 +73,12 @@ class Game {
             trump: this.trump.toDict(),
             players: this.players.map(player => (player.toDict())),
             pointer: this.pointer,
-            strokenCards: this.strokenCards.map(card => (card.toDict())) || [],
+            strokenCards: this.strokenCards.map(card => {
+                return {
+                    attack: card.attack && card.attack.toDict(),
+                    defense: card.defense && card.defense.toDict()
+                }
+            }),
             status: this.status,
             playerSize: this.playerSize
         }

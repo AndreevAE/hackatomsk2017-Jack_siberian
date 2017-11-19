@@ -13,11 +13,7 @@ const routes = [
             {
                 path: '/',
                 exact: true,
-                component: Home
-            },
-            {
-                path: '/home',
-                component: Home
+                component: Auth
             },
             {
                 path: '/auth',

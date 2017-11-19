@@ -53,8 +53,6 @@ function proccessSocketGame(socket, data, user) {
 
                 let newGame = game.toDict();
 
-                console.log(newGame);
-
                 redisClient.set('games', JSON.stringify([...games, newGame]));
                 redisClient.set(`game-${newGame.id}`, JSON.stringify(newGame));
 
@@ -136,14 +134,14 @@ function proccessSocketGame(socket, data, user) {
                 const deck = new Deck(rawGame.deck);
                 const game = new Game(rawGame.id, deck, rawGame);
 
-                let ind = game.pointer === -1 ? 0 : game.pointer;
-                let currentPlayer = game.players[ind];
+
+                let stroke = game.nextPlayers();
+                let currentPlayer = stroke.attackerPrimary;
 
                 if (currentPlayer.name !== user.username) {
                     return;
                 }
 
-                let stroke = game.nextPlayers();
                 let cards = [];
 
                 currentPlayer.cards.map(card => {
@@ -154,18 +152,27 @@ function proccessSocketGame(socket, data, user) {
                     });
                 });
 
-                console.log(cards)
-
-                const updatedPlayer = stroke.attack(cards, game.players[ind]);
+                const updatedPlayer = stroke.attack(cards, currentPlayer);
 
                 if (!updatedPlayer) {
                     return;
                 }
 
-                game.players[ind] = updatedPlayer;
-                game.strokenCards.push(cards[stroke.cards.length - 1]);
+                for (let i = 0; i < game.players.length; i++) {
+                    if (game.players[i].name === currentPlayer.name) {
+                        game.players[i] = updatedPlayer;
+                        break;
+                    }
+                }
+
+                game.strokenCards = stroke.cards;
 
                 redisClient.set(`game-${data.game_id}`, JSON.stringify(game.toDict()));
+
+                socket.emit(`game-${data.game_id}`, {
+                    type: 'update',
+                    data: game.toDict()
+                });
 
                 socket.broadcast.emit(`game-${data.game_id}`, {
                     type: 'update',
@@ -192,15 +199,12 @@ function proccessSocketGame(socket, data, user) {
                 const deck = new Deck(rawGame.deck);
                 const game = new Game(rawGame.id, deck, rawGame);
 
-                let ind = game.pointer === -1 ? 0 : game.pointer;
-                let currentPlayer = game.players[ind];
+                let stroke = game.nextPlayers();
+                let currentPlayer = stroke.attackerPrimary;
 
                 if (currentPlayer.name !== user.username) {
                     return;
                 }
-
-                let stroke = game.nextPlayers();
-                stroke.defend(data.card);
 
                 let defendCard;
                 currentPlayer.cards.map(card => {
@@ -209,24 +213,28 @@ function proccessSocketGame(socket, data, user) {
                     }
                 });
 
-                let coupleCardsId;
-                for (let i = 0; i < currentPlayer.cards.length; i++) {
-                    if (!currentPlayer.cards.defense) {
-                        coupleCardsId = i;
+                let coupleId;
+                for (let i = 0; i < game.strokenCards.length; i++) {
+                    if (!game.strokenCards[i].defense) {
+                        coupleId = i;
                         break;
                     }
                 }
+                const newCouple = stroke.defend(coupleId, defendCard);
 
-                const isDefended = stroke.defend(coupleCardsId, game.players[ind]);
-                console.log(isDefended);
-
-                if (!isDefended) {
+                if (!newCouple) {
                     return;
                 }
 
-                game.strokenCards.push(defendCard);
+                game.strokenCards[coupleId] = newCouple;
+                currentPlayer.remove(defendCard);
 
                 redisClient.set(`game-${data.game_id}`, JSON.stringify(game.toDict()));
+
+                socket.emit(`game-${data.game_id}`, {
+                    type: 'update',
+                    data: game.toDict()
+                });
 
                 socket.broadcast.emit(`game-${data.game_id}`, {
                     type: 'update',
@@ -238,13 +246,6 @@ function proccessSocketGame(socket, data, user) {
 
 
 function socketHandler(socket) {
-    // For test
-    socket.emit('news', {hello: 'world'});
-    socket.on('my other event', function (data) {
-        console.log(data);
-    });
-
-
     socket.on('games', function (data) {
         if (data.token) {
             jwt.decode(config.secret, data.token, function (err, decodedPayload, decodedHeader) {

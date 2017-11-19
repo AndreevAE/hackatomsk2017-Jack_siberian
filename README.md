@@ -20,9 +20,14 @@ Product manager: @Jack_siberian
 
 
 ## Start
-Step 0:
+Step -1:
 ```
 docker run -d -p 6379:6379 redis --port 6379
+```
+
+Step 0:
+```
+cd ./server
 ```
 
 Step 1:
@@ -32,10 +37,15 @@ yarn install
 
 Step 2:
 ```
+yarn start:wallet
+```
+
+Step 3:
+```
 yarn start
 ```
 
-Step 3 (for frontend):
+Step 4 (for frontend):
 ```
 yarn watch
 ```

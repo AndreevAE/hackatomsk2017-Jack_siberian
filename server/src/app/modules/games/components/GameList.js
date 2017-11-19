@@ -84,43 +84,65 @@ export default class GameList extends Component {
 
         return (
             <div>
-                <nav className="navbar navbar-light">
-                    <a className="navbar-brand" href="#">
-                        <img src={logo} width="50"
-                             height="50" className="d-inline-block align-top logo-img"
+                {/*<nav className="navbar navbar-light">*/}
+                    {/*<a className="navbar-brand" href="#">*/}
+                        {/*<img src={logo} width="50"*/}
+                             {/*height="50"*/}
+                             {/*className="d-inline-block align-top logo-img"*/}
+                             {/*alt=""/>*/}
+                        {/*<span className="logo-text">Durak.ru</span>*/}
+                    {/*</a>*/}
+                {/*</nav>*/}
+
+                <div className="nav-list">
+                        <img src={logo} className="logo-img"
                              alt=""/>
-                        <span className="logo-text">Durak.ru</span>
-                    </a>
-                </nav>
+                        <span className="logo-text">Durak</span>
+
+                </div>
 
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-6 offset-md-1">
-                            <br/>
+                        <div className="col-md-10 offset-md-1">
                             <a href="#" onClick={this.createNewGame.bind(this)}
-                               className="btn btn-info">Создать игру</a>
+                               className="btn btn-info float-right">Создать игру</a>
+                                    <br/>
+                                    <br/>
+                        </div>
+                        <div className="col-md-6 offset-md-1">
                             {games.map((game) =>
                                 <div>
-                                    <br/>
                                     <div key={game.id} className="card">
                                         <div className="card-body">
-                                            <h3 className="card-title">
-                                                <Link
-                                                    to={`/games/${game.id}`}>Game
-                                                    #{game.id}</Link>
-                                            </h3>
-                                            Players: {game.players.map(player => (
-                                            <span
-                                                key={player.name}>{player.name}</span>
-                                        ))}
-                                        <button onClick={this.join.bind(this, game.id)} className="btn btn-danger">JOIN</button>
+                                            <div className="row">
+                                                <div className="col-md-8">
+                                                    <h3 className="card-title">
+                                                        <Link
+                                                            to={`/games/${game.id}`}>Game
+                                                            #{game.id}</Link>
+                                                    </h3>
+                                                    Players: {game.players.map(player => (
+                                                    <span
+                                                        key={player.name}>{player.name}</span>
+                                                ))}
+
+                                                </div>
+                                                <div className="col-md-4">
+                                                    <button
+                                                        onClick={this.join.bind(this, game.id)}
+                                                        className="btn btn-danger btn-lg float-right">
+                                                        JOIN
+                                                    </button>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
+                                    <br/>
                                 </div>
                             )}
                         </div>
                         <div className="col-md-4">
-                            <br/>
                             <div className="card">
                                 <div className="card-body">
                                     <h3 className="card-title">
