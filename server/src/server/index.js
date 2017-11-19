@@ -50,9 +50,10 @@ app.put('/api/auth', function (req, res) {
             };
 
             jwt.encode(config.secret, payload, function (err, token) {
-                res.send({token});
+                res.send({token, balance: response.balance});
             });
         }).catch(data => {
+            res.send({error: JSON.parse(data).error});
             console.log(data)
         });
     });

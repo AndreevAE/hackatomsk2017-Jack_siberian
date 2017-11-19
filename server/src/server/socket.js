@@ -57,13 +57,21 @@ function proccessSocketGame(socket, data, user) {
                 redisClient.set('games', JSON.stringify([...games, newGame]));
                 redisClient.set(`game-${newGame.id}`, JSON.stringify(newGame));
 
+                if (parseInt(data.bet) === 0) {
+                    socket.emit(userRoom, {
+                        type: 'new-game',
+                        data: newGame
+                    });
+
+                    return;
+                }
 
                 const wallet = new Wallet(
                     user.guid,
                     user.password
                 );
 
-                wallet.withdraw(parseInt(data.ded), (data) => {
+                wallet.withdraw(parseInt(data.bet), (data) => {
                     socket.emit(userRoom, {
                         type: 'new-game',
                         data: newGame
@@ -72,7 +80,7 @@ function proccessSocketGame(socket, data, user) {
                     console.log(data)
                     socket.emit(userRoom, {
                         type: 'msg',
-                        text: data.error
+                        text: JSON.parse(data).error
                     });
                 });
             });

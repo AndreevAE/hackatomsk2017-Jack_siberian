@@ -35,11 +35,18 @@ export default class App extends Component {
 
                                 <Formik
                                     initialValues={{
-                                        username: ''
+                                        username: '',
+                                        guid: '28e400a2-8a4d-4d62-b2c2-98fbf5765085',
+                                        password: 'TQOnMnT5aqbG7SZ8tRxJ'
                                     }}
                                     onSubmit={(values) => {
                                         authApi.register(values.username, values.guid, values.password).then((data) => {
-                                            alert(`Привет, ${values.username}! Ты крут!`);
+                                            if (data.error) {
+                                                alert(data.error);
+                                                return;
+                                            }
+
+                                            alert(`Привет, ${values.username}! Ты крут! Твой баланс: \n${data.balance}`);
                                             history.push('/games');
                                         });
                                     }}
@@ -63,7 +70,7 @@ export default class App extends Component {
                                                     name="guid"
                                                     type="text"
                                                     onChange={handleChange}
-                                                    value={values.uid}/>
+                                                    value={values.guid}/>
 
                                                 <input
                                                     className="form-control"
