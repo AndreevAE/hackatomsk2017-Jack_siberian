@@ -39,21 +39,19 @@ export default class GameList extends Component {
                     this.setState({
                         games: data.data
                     });
+
+                    console.log('game-list', data.data);
                     break;
 
                 case 'new-game':
                     this.props.history.push(`/games/${data.data.id}`);
                     break;
+
+                case 'join':
+                    console.log(data.data)
+                    this.props.history.push(`/games/${data.data.id}`);
+                    break;
             }
-        });
-
-
-        socket.on('games', (data) => {
-            if (data.error) {
-                console.log(data.error);
-            }
-
-            console.log('games', data);
         });
     }
 
@@ -71,13 +69,22 @@ export default class GameList extends Component {
         });
     }
 
+    join(id) {
+        const {socket} = this.state;
+
+        socket.emit('games', {
+            action: 'join',
+            token: $.cookie('token'),
+            game_id: id
+        });
+    }
+
     render() {
         const {games} = this.state;
 
         return (
             <div>
                 <nav className="navbar navbar-light">
-
                     <a className="navbar-brand" href="#">
                         <img src={logo} width="50"
                              height="50" className="d-inline-block align-top logo-img"
@@ -104,8 +111,9 @@ export default class GameList extends Component {
                                             </h3>
                                             Players: {game.players.map(player => (
                                             <span
-                                                key={player.id}>{player.username}</span>
+                                                key={player.name}>{player.name}</span>
                                         ))}
+                                        <button onClick={this.join.bind(this, game.id)} className="btn btn-danger">JOIN</button>
                                         </div>
                                     </div>
                                 </div>

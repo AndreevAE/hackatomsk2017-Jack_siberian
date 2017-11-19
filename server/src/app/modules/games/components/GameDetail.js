@@ -20,28 +20,68 @@ export default class GameDetail extends Component {
         this.state = {
             socket,
             game: {
-                currentPlayer: {
+                deck: {
                     cards: []
                 },
-                players: [
-                    {
-                        id: 1,
-                        username: 'test',
-                        cards: []
-                    },
-                    {
-                        id: 2,
-                        username: 'SUPER!!!!!!',
-                        cards: []
-                    }
-                ],
-                cards: [],
-                mainCard: {},
-                busyCards: []
+                strokenCards: [],
+                trump: {},
+                players: [],
+                currentPlayer: {
+                    cards: []
+                }
             },
-
-            user: authApi.getUser()
+            user: authApi.getUser(),
+            selectedCard: {}
         };
+    }
+
+    updateGame(data, user) {
+        if (parseInt(this.props.match.params.id) !== parseInt(data.data.id)) {
+            return
+        }
+
+        let currentPlayer = {
+            cards: []
+        };
+
+        for (let i = 0; i < data.data.players.length; i++) {
+            if (data.data.players[i].name === user.username) {
+                currentPlayer = data.data.players[i];
+                data.data.players.splice(i, 1);
+                break;
+            }
+        }
+
+        for (let i = 0; i < data.data.players.length; i++) {
+            let player = data.data.players[i];
+
+            for (let j = 0; j < player.cards.length; j++) {
+                let card = data.data.players[i].cards[j];
+                let num = player.cards.length * 3;
+                let radius = 50;
+
+                let f = 2 / num * j * Math.PI - 0.78;  // Рассчитываем
+                // угол каждой картинки в радианах
+                let left = radius * Math.sin(f) + 'px';
+                let top = radius * Math.cos(f) + 'px';
+
+                card.style = {
+                    'top': top,
+                    'left': left
+                };
+
+                data.data.players[i].cards[j] = card;
+            }
+        }
+
+
+        data.data.currentPlayer = currentPlayer;
+
+        this.setState({
+            game: data.data,
+        });
+
+        console.log(data.data);
     }
 
     componentDidMount() {
@@ -53,63 +93,44 @@ export default class GameDetail extends Component {
             game_id: this.props.match.params.id
         });
 
+        socket.on(`game-${this.props.match.params.id}`, data => {
+            switch (data.type) {
+                case 'update':
+                    this.updateGame(data, user);
+                    break;
+            }
+        });
+
         socket.on(`user-${user.username}`, (data) => {
             switch (data.type) {
                 case 'game-detail':
-                    if (parseInt(this.props.match.params.id) !== parseInt(data.data.id)) {
-                        return
-                    }
-
-                    let currentPlayer = {
-                        cards: []
-                    };
-
-                    for (let i = 0; i < data.data.players.length; i++) {
-                        if (data.data.players[i].username === user.username) {
-                            currentPlayer = data.data.players[i];
-                            data.data.players.splice(i, 1);
-                            break;
-                        }
-                    }
-
-                    for (let i = 0; i < data.data.players.length; i++) {
-                        let player = data.data.players[i];
-
-                        for (let j = 0; j < player.cards.length; j++) {
-                            let card = data.data.players[i].cards[j];
-                            let num = player.cards.length * 3;
-                            let radius = 50;
-
-                            let f = 2 / num * j * Math.PI - 0.78;  // Рассчитываем
-                            // угол каждой картинки в радианах
-                            let left = radius * Math.sin(f) + 'px';
-                            let top = radius * Math.cos(f) + 'px';
-
-                            card.style = {
-                                'top': top,
-                                'left': left
-                            };
-
-                            data.data.players[i].cards[j] = card;
-                        }
-                    }
-
-
-                    data.data.currentPlayer = currentPlayer;
-
-                    this.setState({
-                        game: data.data,
-                    });
-
-                    console.log(data.data);
-
+                    this.updateGame(data, user);
                     break;
             }
         });
     }
 
-    popCard(num, suit) {
-        alert(num + ' ' + suit)
+    attack(card) {
+        const {socket} = this.state;
+        this.setState({selectedCard: card});
+
+        socket.emit('games', {
+            action: 'attack',
+            token: $.cookie('token'),
+            cards: [card],
+            game_id: this.props.match.params.id
+        });
+    }
+
+    defend() {
+        const {socket} = this.state;
+
+        socket.emit('games', {
+            action: 'defend',
+            token: $.cookie('token'),
+            card: this.state.selectedCard,
+            game_id: this.props.match.params.id
+        });
     }
 
     render() {
@@ -120,27 +141,28 @@ export default class GameDetail extends Component {
                 <div className="row">
                     <div className="col-md-10 offset-md-1">
                         <div className="busy-cards">
-                            {game.busyCards.map(card => (
+                            {game.strokenCards.map(card => (
                                 <img
-                                    key={`${card.num}-${card.suit}`}
+                                    key={`${card.value}-${card.suit}`}
                                     className="game-card"
-                                    src={`/cards2/${card.suit}-${card.num}.png`}
-                                    onClick={this.popCard.bind(this, card.num, card.suit)}
+                                    src={`/cards2/${card.suit}-${card.value}.png`}
+                                    onClick={this.attack.bind(this, card.value, card.suit)}
                                     alt=""
                                 />
                             ))}
                         </div>
                         <div className="free-cards">
-                            {game.cards.map(card => (
+                            {game.deck.cards.map(card => (
                                 <img
                                     key={`${card.num}-${card.suit}`}
                                     className="game-card"
                                     src={`/cards2/back.png`}
-                                    onClick={this.popCard.bind(this, card.num, card.suit)}
                                     alt=""
                                 />
                             ))}
-                            <img className="main-card" src={`/cards2/${game.mainCard.suit}-${game.mainCard.num}.png`} alt=""/>
+                            <img className="main-card"
+                                 src={`/cards2/${game.trump.suit}-${game.trump.num}.png`}
+                                 alt=""/>
                         </div>
                         <div className="players">
                             {game.players.map(player => (
@@ -148,15 +170,15 @@ export default class GameDetail extends Component {
                                      className="player">
                                     <img
                                         src={`/animal_avatars/${player.avatar}.png`}
-                                        className={`avatar ${player.isActive && 'active'}`} alt="avatar"/>
-                                    <span>{player.username}</span>
+                                        className={`avatar ${player.isActive && 'active'}`}
+                                        alt="avatar"/>
+                                    <span>{player.name}</span>
                                     <div className="player-cards">
                                         {player.cards.map(card => (
                                             <img
                                                 key={`${card.num}-${card.suit}`}
                                                 className="game-card"
                                                 src={`/cards2/back.png`}
-                                                onClick={this.popCard.bind(this, card.num, card.suit)}
                                                 alt=""
                                                 style={card.style}
                                             />
@@ -170,9 +192,12 @@ export default class GameDetail extends Component {
                                 <img key={`${card.num}-${card.suit}`}
                                      className="game-card"
                                      src={`/cards2/${card.suit}-${card.num}.png`}
-                                     onClick={this.popCard.bind(this, card.num, card.suit)}
+                                     onClick={this.attack.bind(this, card)}
                                      alt=""/>
                             ))}
+                        </div>
+                        <div>
+                            <button className="btn btn-light" onClick={this.defend.bind(this)}>Defend</button>
                         </div>
                     </div>
                 </div>
