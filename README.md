@@ -25,9 +25,14 @@ Source for icons: freepic.com and flaticon.com
 
 
 ## Start
-Step 0:
+Step -1:
 ```
 docker run -d -p 6379:6379 redis --port 6379
+```
+
+Step 0:
+```
+cd ./server
 ```
 
 Step 1:
@@ -36,13 +41,21 @@ yarn install
 ```
 
 Step 2:
+* Node.JS v7.5
+```
+cd ../server-wallet
+yarn install
+yarn start:wallet
+```
+
+Step 3:
 ```
 yarn start
 ```
 
-Step 3 (for frontend):
+Step 4 (for frontend):
 ```
-yarn watch
+yarn start:dev
 ```
 # server for game 
   ZMQ (use socet) http://zeromq.org/bindings:cpp 

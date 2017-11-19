@@ -1,0 +1,14 @@
+{
+  "name": "server-wallet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:wallet": "blockchain-wallet-service start --port 3005"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "blockchain-wallet-service": "^0.26.0"
+  }
+}

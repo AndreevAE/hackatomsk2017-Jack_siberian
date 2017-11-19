@@ -2,28 +2,28 @@ const cardManager = {
     generateCards: () => {
         let cards = [];
 
-        for (let i = 6; i < 14; i++) {
+        for (let i = 6; i < 11; i++) {
             cards.push({
                 num: i,
                 suit: 'clubs'
             });
         }
 
-        for (let i = 6; i < 14; i++) {
+        for (let i = 6; i < 11; i++) {
             cards.push({
                 num: i,
                 suit: 'diamonds'
             });
         }
 
-        for (let i = 6; i < 14; i++) {
+        for (let i = 6; i < 11; i++) {
             cards.push({
                 num: i,
                 suit: 'hearts'
             });
         }
 
-        for (let i = 6; i < 14; i++) {
+        for (let i = 6; i < 11; i++) {
             cards.push({
                 num: i,
                 suit: 'spades'

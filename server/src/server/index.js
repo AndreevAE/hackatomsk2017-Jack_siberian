@@ -3,14 +3,15 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const path = require('path');
-const jwt = require('json-web-token');
-const cors = require('cors');
+const jwt = require("json-web-token");
+const cors = require("cors");
 const bodyParser = require("body-parser");
-
-const config = require('./config');
-const socketHandler = require('./socket');
-
+const socketHandler = require("./socket");
 const redis = require("redis");
+
+const config = require("./config");
+const Wallet = require("./wallet");
+
 const redisClient = redis.createClient();
 
 app.use(cors());
@@ -21,7 +22,7 @@ app.use('/assets', express.static(path.join(__dirname, '../../build')));
 
 
 app.put('/api/auth', function (req, res) {
-    res.sendFile(path.resolve(__dirname + '../../../build/index.html'));
+    // res.sendFile(path.resolve(__dirname + '../../../build/index.html'));
     const username = req.body.username;
 
     redisClient.get('users', function (err, reply) {
@@ -35,14 +36,26 @@ app.put('/api/auth', function (req, res) {
 
         redisClient.set('users', JSON.stringify(users));
 
-        let payload = {
-            username,
-            avatar: 'animal_0' + (Math.floor(Math.random() * 8) + 1)
-        };
+        const wallet = new Wallet(
+            req.body.guid,
+            req.body.password
+        );
 
-        jwt.encode(config.secret, payload, function (err, token) {
-            res.send({token});
-        })
+        wallet.getBalance().then(response => {
+            let payload = {
+                username,
+                guid: req.body.guid,
+                password: req.body.password,
+                avatar: 'animal_0' + (Math.floor(Math.random() * 8) + 1)
+            };
+
+            jwt.encode(config.secret, payload, function (err, token) {
+                res.send({token, balance: response.balance});
+            });
+        }).catch(data => {
+            res.send({error: JSON.parse(data).error});
+            console.log(data)
+        });
     });
 });
 

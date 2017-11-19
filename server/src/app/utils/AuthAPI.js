@@ -20,14 +20,14 @@ export default class AuthAPI {
         return JSON.parse(window.atob(base64))
     }
 
-    register(username) {
+    register(username, guid, password) {
         return fetch('http://localhost:3000/api/auth', {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             method: 'put',
-            body: JSON.stringify({username})
+            body: JSON.stringify({username, guid, password})
         }).then(response => (
             response.json()
         )).then(data => {

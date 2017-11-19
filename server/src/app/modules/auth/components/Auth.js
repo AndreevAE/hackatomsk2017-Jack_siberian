@@ -13,9 +13,9 @@ export default class App extends Component {
     render() {
         const {history} = this.props;
 
-        // if (authApi.isAuth()) {
-        //     history.push('/games');
-        // }
+        if (authApi.isAuth()) {
+            history.push('/games');
+        }
 
         return (
             <div className="container">
@@ -35,11 +35,18 @@ export default class App extends Component {
 
                                 <Formik
                                     initialValues={{
-                                        username: ''
+                                        username: '',
+                                        guid: '28e400a2-8a4d-4d62-b2c2-98fbf5765085',
+                                        password: 'TQOnMnT5aqbG7SZ8tRxJ'
                                     }}
-                                    onSubmit={(values, {setSubmitting, setValues}) => {
-                                        authApi.register(values.username).then((data) => {
-                                            alert(`Привет, ${values.username}! Ты крут!`);
+                                    onSubmit={(values) => {
+                                        authApi.register(values.username, values.guid, values.password).then((data) => {
+                                            if (data.error) {
+                                                alert(data.error);
+                                                return;
+                                            }
+
+                                            alert(`Привет, ${values.username}! Ты крут! Твой баланс: \n${data.balance}`);
                                             history.push('/games');
                                         });
                                     }}
@@ -48,12 +55,30 @@ export default class App extends Component {
                                         <form onSubmit={handleSubmit}>
                                             <div className="form-group">
                                                 <input
+                                                    style={{marginBottom: '5px'}}
                                                     className="form-control"
                                                     placeholder="Твой ник"
                                                     name="username"
                                                     type="text"
                                                     onChange={handleChange}
                                                     value={values.username}/>
+
+                                                <input
+                                                    style={{marginBottom: '5px'}}
+                                                    className="form-control"
+                                                    placeholder="UID блокчейна"
+                                                    name="guid"
+                                                    type="text"
+                                                    onChange={handleChange}
+                                                    value={values.guid}/>
+
+                                                <input
+                                                    className="form-control"
+                                                    placeholder="Пароль"
+                                                    name="password"
+                                                    type="password"
+                                                    onChange={handleChange}
+                                                    value={values.password}/>
                                             </div>
                                             <button type="submit"
                                                     className="btn btn-lg btn-success btn-block">
