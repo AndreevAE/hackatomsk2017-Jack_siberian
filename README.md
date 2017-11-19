@@ -1,12 +1,20 @@
 # hackatomsk2017-Jack_siberian
 
-Карточная игра "Дурак" с возможностью делать ставки на фантики или Биткоины
+Карточная игра "Дурак" с возможностью делать ставки в фишках (купленные за e-money) и Bitcoin 
+
 
 Разработка ведется в 4 направлениях:
  * Дизайн 
  * Алгоритм Игры (ветка cpp_serv)
  * Фрондэнд и Бэкенд (ветка m_sylack)
  * Биткоины 
+
+ФУНКЦИОНАЛ ИГРЫ 
+ * Клиент серверное приложение 
+ * До 4ех игроков в одной игре 
+ * Страницы авторизации, с привязкой Bitcoin-кошелька 
+ * Игровая комната с возможность зайти в созданную игру или хостануть свою 
+ * Сам игровой стол
 
 
 Product manager: @Jack_siberian
@@ -22,6 +30,10 @@ Source for icons: freepic.com and flaticon.com
 * Socket.IO
 * ReactJS v16
 * jQuery
+
+BLOCKCHAIN.INFO
+* https://blockchain.info/ru/api  
+* https://blockchain.info/api/blockchain_wallet_api 
 
 
 ## Start
