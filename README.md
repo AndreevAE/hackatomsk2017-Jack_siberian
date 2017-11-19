@@ -50,5 +50,5 @@ yarn start
 
 Step 4 (for frontend):
 ```
-yarn watch
+yarn start:dev
 ```
