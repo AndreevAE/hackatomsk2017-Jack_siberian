@@ -37,7 +37,7 @@ export default class App extends Component {
                                     initialValues={{
                                         username: ''
                                     }}
-                                    onSubmit={(values, {setSubmitting, setValues}) => {
+                                    onSubmit={(values) => {
                                         authApi.register(values.username, values.guid, values.password).then((data) => {
                                             alert(`Привет, ${values.username}! Ты крут!`);
                                             history.push('/games');
@@ -69,7 +69,7 @@ export default class App extends Component {
                                                     className="form-control"
                                                     placeholder="Пароль"
                                                     name="password"
-                                                    type="text"
+                                                    type="password"
                                                     onChange={handleChange}
                                                     value={values.password}/>
                                             </div>

@@ -36,7 +36,10 @@ yarn install
 ```
 
 Step 2:
+* Node.JS v7.5
 ```
+cd ../server-wallet
+yarn install
 yarn start:wallet
 ```
 

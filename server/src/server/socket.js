@@ -4,6 +4,7 @@ const jwt = require('json-web-token');
 const config = require('./config');
 const Deck = require('./logic/Deck');
 const Game = require('./logic/Game');
+const Wallet = require("./wallet");
 
 
 function proccessSocketGame(socket, data, user) {
@@ -56,9 +57,23 @@ function proccessSocketGame(socket, data, user) {
                 redisClient.set('games', JSON.stringify([...games, newGame]));
                 redisClient.set(`game-${newGame.id}`, JSON.stringify(newGame));
 
-                socket.emit(userRoom, {
-                    type: 'new-game',
-                    data: newGame
+
+                const wallet = new Wallet(
+                    user.guid,
+                    user.password
+                );
+
+                wallet.withdraw(parseInt(data.ded), (data) => {
+                    socket.emit(userRoom, {
+                        type: 'new-game',
+                        data: newGame
+                    });
+                }, (data) => {
+                    console.log(data)
+                    socket.emit(userRoom, {
+                        type: 'msg',
+                        text: data.error
+                    });
                 });
             });
             break;

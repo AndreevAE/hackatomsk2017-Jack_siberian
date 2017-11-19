@@ -4,6 +4,7 @@ import $ from "jquery";
 import AuthAPI from "../../../utils/AuthAPI";
 import openSocket from "socket.io-client";
 import logo from "../../../assets/imgs/logo.png";
+import {Formik} from "formik";
 
 
 const authApi = new AuthAPI();
@@ -51,6 +52,10 @@ export default class GameList extends Component {
                     console.log(data.data)
                     this.props.history.push(`/games/${data.data.id}`);
                     break;
+
+                case 'msg':
+                    alert(data.text)
+                    break;
             }
         });
     }
@@ -60,12 +65,14 @@ export default class GameList extends Component {
         socket.disconnect();
     }
 
-    createNewGame() {
+    createNewGame(bet, num_players) {
         const {socket} = this.state;
 
         socket.emit('games', {
             action: 'create',
-            token: $.cookie('token')
+            token: $.cookie('token'),
+            bet,
+            num_players
         });
     }
 
@@ -104,27 +111,45 @@ export default class GameList extends Component {
 
                             <div className="collapse" id="collapseExample">
                                 <div className="card card-body">
+                                    <Formik
+                                        initialValues={{
+                                            bet: '',
+                                            num_players: ''
+                                        }}
+                                        onSubmit={(values) => {
+                                            this.createNewGame(values.bet, values.num_players);
+                                        }}
+                                        render={({values, errors, touched, handleChange, handleSubmit, isSubmitting}) =>
+                                            <form onSubmit={handleSubmit}>
+                                                <div className="input-group"
+                                                     style={{marginBottom: '5px'}}>
+                                                    <span
+                                                        className="input-group-addon">$</span>
+                                                    <input type="text"
+                                                           className="form-control"
+                                                           placeholder="Ставка"
+                                                           name="bet"
+                                                           onChange={handleChange}
+                                                           value={values.bet}/>
+                                                </div>
+                                                <div className="input-group"
+                                                     style={{marginBottom: '5px'}}>
+                                                    <input
+                                                        className="form-control"
+                                                        placeholder="Кол-во игроков"
+                                                        name="num_players"
+                                                        type="text"
+                                                        onChange={handleChange}
+                                                        value={values.num_players}/>
+                                                </div>
+                                                <div className="input-group">
+                                                    <button type="submit"
+                                                            className="btn btn-success">
+                                                        Создать
+                                                    </button>
 
-                                    <div className="input-group"
-                                         style={{marginBottom: '5px'}}>
-                                        <span
-                                            className="input-group-addon">$</span>
-                                        <input type="text"
-                                               className="form-control"
-                                               placeholder="Ставка"/>
-                                    </div>
-                                    <div className="input-group"
-                                         style={{marginBottom: '5px'}}>
-                                        <input type="text"
-                                               className="form-control"
-                                               placeholder="Кол-во игроков"/>
-                                    </div>
-                                    <div className="input-group">
-                                        <a href="#"
-                                           onClick={this.createNewGame.bind(this)}
-                                           className="btn btn-success">Создать</a>
-
-                                    </div>
+                                                </div>
+                                            </form>}/>
 
                                 </div>
                                 <br/>
